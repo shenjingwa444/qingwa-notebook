@@ -17,7 +17,7 @@
               <span>{{ notebook.noteCounts }}</span>
               <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>
               <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>
-              <span class="date">{{notebook.createdAt}}</span>
+              <span class="date">{{ notebook.friendlyCreatedAt }}</span>
             </div>
           </router-link>
         </div>
@@ -74,7 +74,7 @@ export default {
       if (isConfirm) {
         Notebooks.deleteNotebook(notebook.id)
           .then(res => {
-            this.notebooks.splice(this.notebooks.indexOf(notebook.id),1)
+            this.notebooks.splice(this.notebooks.indexOf(notebook.id), 1)
             alert(res.msg)
           })
       }
