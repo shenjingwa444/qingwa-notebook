@@ -33,6 +33,7 @@
 <script>
 
   import Auth from '../apis/auth'
+  import Bus from '../helpers/bus'
   export default {
     data(){
       return {
@@ -79,6 +80,7 @@
           }).then(data => {
           this.register.isError = false
           this.register.notice = ''
+          Bus.$emit('userInfo',{username:this.register.username})
           this.$router.push({path:'notebooks'})
           }).catch(data=>{
           console.log(data.msg)
@@ -101,6 +103,7 @@
           }).then(data => {
             this.login.isError=false
             this.login.notice = ''
+            Bus.$emit('userInfo',{username:this.login.username})
             this.$router.push({path:'notebooks'})
           }).catch(data=>{
           console.log(data.msg)

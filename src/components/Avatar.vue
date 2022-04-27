@@ -4,10 +4,7 @@
 
 <script>
 import Auth from "../apis/auth"
-Auth.getInfo()
-  .then(res => {
-    console.log(res)
-  })
+import Bus from '../helpers/bus'
 export default {
   data() {
     return {
@@ -15,6 +12,11 @@ export default {
     }
   },
   created(){
+    Bus.$on('userInfo',user=>{
+      console.log(user.username)
+      this.username = user.username
+      console.log(this.username)
+    })
     Auth.getInfo()
       .then(res => {
         if (res.isLogin) {
@@ -24,7 +26,7 @@ export default {
   },
   computed:{
     slug(){
-      return this.username[0]
+      return this.username.charAt(0)
     }
   }
 }
