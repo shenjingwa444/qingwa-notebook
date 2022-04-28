@@ -18,7 +18,9 @@ export default {
     }
   },
   methods:{
-
+    open(){
+      console.log("222")
+    }
   }
 }
 </script>
