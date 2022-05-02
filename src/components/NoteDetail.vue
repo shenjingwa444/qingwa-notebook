@@ -1,9 +1,20 @@
 <template>
   <div id="note" class="detail">
-    <NoteSidebar/>
-    <div id="note-detail">
-      <h1>{{ msg }} : {{ $route.query.notebookId }}</h1>
-      <h1>笔记本 : {{ $route.query.noteId }}</h1>
+    <note-sidebar></note-sidebar>
+    <div class="note-detail">
+      <div class="note-bar">
+        <span>创建日期：{{currentNote.createdAtFriendly}}</span>
+        <span>更新日期:{{currentNote.updatedAtFriendly}}</span>
+        <span>{{currentNote.statusText}}</span>
+        <span class="iconfont icon-shanchu"></span>
+        <span class="iconfont icon-138-enlarge"></span>
+      </div>
+      <div class="note-title">
+        <input type="text" placeholder="输入标题" :value="currentNote.title">
+      </div>
+      <div class="editor">
+        <textarea :value="currentNote.content" placeholder="输入内容，支持 markdown 格式"></textarea>
+      </div>
     </div>
   </div>
 </template>
@@ -15,7 +26,13 @@ import NoteSidebar from "./NoteSidebar"
 export default {
   data() {
     return {
-      msg: "笔记详情页"
+      currentNote:{
+        title:'我的笔记',
+        content:'',
+        createdAtFriendly:'1天前',
+        updatedAtFriendly:'刚刚',
+        statusText:'未更新'
+      }
     }
   },
   components: {
@@ -33,6 +50,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import url(../assets/css/note-detail);
 #note{
   display: flex;
   align-items: stretch;

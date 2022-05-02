@@ -18,8 +18,6 @@ export default {
             note.updatedAtFriendly = friendlyDate(note.updatedAt)
             return note
           }).sort((note1,note2)=>note1.updatedAt > note2.updatedAt ? -1 :1)
-          console.log('1')
-          console.log(res.data)
           resolve(res)
       }).catch(err => {
         reject(err)
