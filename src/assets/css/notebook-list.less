@@ -1,0 +1,83 @@
+#notebook-list {
+  flex: 1;
+
+  header {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+
+    .btn {
+      font-size: 12px;
+      color: #666;
+      margin-left: 10px;
+
+      .iconfont {
+        font-size: 12px;
+      }
+    }
+  }
+
+  main {
+    padding: 30px 40px;
+
+    .layout {
+      margin: 0 auto;
+      max-width: 966px;
+
+      h3 {
+        font-size: 12px;
+        color: #000;
+      }
+
+      .book-list {
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 14px;
+        background-color: #fff;
+        border-radius: 4px;
+        font-weight: bold;
+        line-height: 50px;
+
+        span {
+          font-size: 12px;
+          font-weight: bold;
+          color: #b3c0c8;
+        }
+
+        .notebook {
+          display: block;
+          cursor: pointer;
+          height: 50px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          padding-left: 5px;
+          padding-right: 5px;
+          outline: none;
+
+          .action, .date {
+            float: right;
+          }
+
+          span {
+            margin-left: 5px;
+            margin-right: 5px;
+          }
+
+          .iconfont {
+            color: #1687ea;
+            margin-right: 10px;
+          }
+
+          :hover {
+            background-color: #f7fafd;
+          }
+        }
+      }
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: red;
+    }
+  }
+}
