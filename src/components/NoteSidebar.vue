@@ -2,7 +2,7 @@
   <div class="note-sidebar">
     <el-dropdown class="notebook-title" @command="handleCommand">
           <span class="el-dropdown-link">
-            {{currentBook.title}}
+            {{ currentBook.title }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
       <el-dropdown-menu slot="dropdown">
@@ -30,7 +30,7 @@
 <script>
 import Notebooks from "../apis/notebook"
 import Notes from "../apis/notes"
-
+import Bus from '../helpers/bus'
 export default {
   created() {
     Notebooks.getAll()
@@ -38,9 +38,11 @@ export default {
         this.notebooks = res.data
         //this.notebooks 里面的 notebook.id 是 number ，this.$route.query.notebookId 是 string ，不能用 ===
         this.currentBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId) || this.notebooks[0] || {}
-        return Notes.getAll({notebookId:this.currentBook.id})
-      }).then(res=>{
-        this.notes = res.data
+        return Notes.getAll({notebookId: this.currentBook.id})
+      }).then(res => {
+      this.notes = res.data
+      this.$emit("update:notes", this.notes)
+      Bus.$emit('update:notes',this.notes)
     })
   },
   data() {
@@ -56,9 +58,11 @@ export default {
         return this.$router.push({path: "/trash"})
       }
       this.currentBook = this.notebooks.find(notebook => notebook.id === notebookId)
+      console.log(this.currentBook)
       Notes.getAll({notebookId})
         .then(res => {
           this.notes = res.data
+          this.$emit('update:notes',this.notes)
         })
     },
     addNote() {
