@@ -2,6 +2,9 @@
   flex:1;
   display:flex;
   flex-direction:column;
+  .note-detail-calc{
+     height:100%
+  }
   .note-empty{
     text-align:center;
     color:#ccc;
@@ -9,6 +12,7 @@
     margin-top: 100px;
   }
   .note-bar{
+    height:100%;
     padding:4px 20px;
     border-bottom:1px solid #eee;
     &:after{
@@ -42,7 +46,7 @@
   }
 
   .editor{
-    height:~"calc(100% - 7px)";
+    height:~"calc(100% - 71px)";
     textarea{
       border:none;
       outline:none;
@@ -52,6 +56,11 @@
       height: 100%;
       padding:20px;
       font-family: 'Monaco',courier,monospace;
+    }
+    .preview{
+      width: 100%;
+      height: 100%;
+      padding:20px;
     }
   }
 }
