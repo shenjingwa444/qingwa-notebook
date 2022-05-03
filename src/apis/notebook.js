@@ -12,14 +12,14 @@ export default {
   getAll() {
     return new Promise((resolve, reject) => {
       request(URL.GET)
-        .then(res=>{
+        .then(res => {
           res.data = res.data.sort((notebook1, notebook2) => notebook1.createdAt > notebook2.createdAt ? -1 : 1)
-          res.data.forEach(data=>{
+          res.data.forEach(data => {
             data.friendlyCreatedAt = friendlyDate(data.createdAt)
           })
           resolve(res)
-        }).catch(err=>{
-          reject(err)
+        }).catch(err => {
+        reject(err)
       })
     })
   },
@@ -30,6 +30,6 @@ export default {
     return request(URL.DELETE.replace(":id", notebookId), "DELETE")
   },
   addNotebook({title = ""} = {title: ""}) {
-    return request(URL.ADD, "POST", {title})
+    return request(URL.ADD, 'POST', { title })
   }
 }

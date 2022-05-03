@@ -58,7 +58,6 @@ export default {
         return this.$router.push({path: "/trash"})
       }
       this.currentBook = this.notebooks.find(notebook => notebook.id === notebookId)
-      console.log(this.currentBook)
       Notes.getAll({notebookId})
         .then(res => {
           this.notes = res.data
@@ -66,7 +65,10 @@ export default {
         })
     },
     addNote() {
-      console.log("xxxx")
+      Notes.addNote({notebookId:this.currentBook.id})
+        .then(res=>{
+          this.notes.unshift(res.data)
+        })
     }
   }
 }

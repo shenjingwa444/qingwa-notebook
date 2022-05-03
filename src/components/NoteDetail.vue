@@ -10,7 +10,7 @@
           <span>创建日期：{{ currentNote.createdAtFriendly }}</span>
           <span>更新日期:{{ currentNote.updatedAtFriendly }}</span>
           <span>{{ statusText }}</span>
-          <span class="iconfont icon-shanchu"></span>
+          <span class="iconfont icon-shanchu" @click="deleteNote"></span>
           <span class="iconfont icon-138-enlarge"></span>
         </div>
         <div class="note-title">
@@ -66,7 +66,15 @@ export default {
         }).catch(err=>
         this.statusText = '保存错误'
       )
-    },300)
+    },300),
+    deleteNote(){
+      Notes.deleteNote({noteId:this.currentNote.id})
+        .then(data=>{
+          this.$message.success(data.msg)
+          this.notes.splice(this.notes.indexOf(this.currentNote),1)
+          this.$router.replace({path:'/note'})
+        })
+    }
   }
 }
 </script>
