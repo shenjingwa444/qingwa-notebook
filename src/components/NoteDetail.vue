@@ -9,15 +9,15 @@
         <div class="note-bar">
           <span>创建日期：{{ currentNote.createdAtFriendly }}</span>
           <span>更新日期:{{ currentNote.updatedAtFriendly }}</span>
-          <span>{{ currentNote.statusText }}</span>
+          <span>{{ statusText }}</span>
           <span class="iconfont icon-shanchu"></span>
           <span class="iconfont icon-138-enlarge"></span>
         </div>
         <div class="note-title">
-          <input type="text" placeholder="输入标题" v-model:value="currentNote.title">
+          <input type="text" placeholder="输入标题" v-model:value="currentNote.title" @input="updateNote" @keydown="statusText='输入中'">
         </div>
         <div class="editor">
-          <textarea :value="currentNote.content" placeholder="输入内容，支持 markdown 格式"></textarea>
+          <textarea v-model:value="currentNote.content" placeholder="输入内容，支持 markdown 格式" @input="updateNote" @keydown="statusText='输入中'"></textarea>
         </div>
       </div>
     </div>
@@ -28,12 +28,15 @@
 import Auth from "../apis/auth"
 import NoteSidebar from "./NoteSidebar"
 import Bus from "../helpers/bus"
+import Notes from '../apis/notes'
+import _ from 'lodash'
 
 export default {
   data() {
     return {
       currentNote: {},
-      notes: []
+      notes: [],
+      statusText:'笔记未改动'
     }
   },
   components: {
@@ -55,6 +58,16 @@ export default {
     this.currentNote = this.notes.find(note => note.id == to.query.noteId) ||{}
     next()
   },
+  methods:{
+    updateNote:_.debounce(function(){
+      Notes.updateNote({noteId:this.currentNote.id},{title:this.currentNote.title,content:this.currentNote.content})
+        .then(res=>{
+          this.statusText = '已保存'
+        }).catch(err=>
+        this.statusText = '保存错误'
+      )
+    },300)
+  }
 }
 </script>
 
