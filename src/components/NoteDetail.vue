@@ -7,8 +7,8 @@
       </div>
       <div class="note-detail-calc" v-show="currentNote.id">
         <div class="note-bar">
-          <span>创建日期：{{ currentNote.createdAtFriendly }}</span>
-          <span>更新日期:{{ currentNote.updatedAtFriendly }}</span>
+          <span>创建日期：{{ currentNote.friendlyCreatedAt }}</span>
+          <span>更新日期:{{ currentNote.friendlyUpdatedAt }}</span>
           <span>{{ statusText }}</span>
           <span class="iconfont icon-shanchu" @click="deleteNote"></span>
           <el-tooltip class="item" effect="dark" content="预览" placement="bottom">
@@ -41,7 +41,6 @@ import _ from "lodash"
 import MarkdownIt from "markdown-it"
 
 let md = MarkdownIt()
-console.log(md)
 export default {
   data() {
     return {

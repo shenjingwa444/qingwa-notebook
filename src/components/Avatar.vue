@@ -13,9 +13,7 @@ export default {
   },
   created(){
     Bus.$on('userInfo',user=>{
-      console.log(user.username)
       this.username = user.username
-      console.log(this.username)
     })
     Auth.getInfo()
       .then(res => {
