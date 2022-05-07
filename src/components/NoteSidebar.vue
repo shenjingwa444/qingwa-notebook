@@ -28,47 +28,48 @@
 </template>
 
 <script>
-import Notebooks from "../apis/notebooks"
-import Notes from "../apis/notes"
 import Bus from '../helpers/bus'
+import {mapGetters,mapActions,mapMutations} from 'vuex'
+
 export default {
   created() {
-    Notebooks.getAll()
-      .then(res => {
-        this.notebooks = res.data
-        //this.notebooks 里面的 notebook.id 是 number ，this.$route.query.notebookId 是 string ，不能用 ===
-        this.currentBook = this.notebooks.find(notebook => notebook.id == this.$route.query.notebookId) || this.notebooks[0] || {}
-        return Notes.getAll({notebookId: this.currentBook.id})
-      }).then(res => {
-      this.notes = res.data
-      this.$emit("update:notes", this.notes)
-      Bus.$emit('update:notes',this.notes)
+    this.getNotebooks()
+      .then(()=>{
+        this.setCurrenBook({currentBookId:this.$route.query.notebookId})
+        return this.getNotes({notebookId:this.currentBook.id})
+      }).then(() => {
+        this.setCurrentNote({currentNoteId:this.$route.query.noteId})
     })
   },
   data() {
-    return {
-      notebooks: [],
-      notes: [],
-      currentBook: []
-    }
+    return {}
+  },
+  computed:{
+    ...mapGetters([
+      'notes',
+      'notebooks',
+      'currentBook',
+    ])
   },
   methods: {
+    ...mapActions([
+      'getNotebooks',
+      "getNotes",
+      'addNote'
+    ]),
+    ...mapMutations([
+      'setCurrenBook',
+      'setCurrentNote'
+    ]),
     handleCommand(notebookId) {
       if (notebookId === "trash") {
         return this.$router.push({path: "/trash"})
       }
-      this.currentBook = this.notebooks.find(notebook => notebook.id === notebookId)
-      Notes.getAll({notebookId})
-        .then(res => {
-          this.notes = res.data
-          this.$emit('update:notes',this.notes)
-        })
+      this.$store.commit('setCurrenBook',{currentBookId:notebookId})
+      this.getNotes({notebookId})
     },
     addNote() {
-      Notes.addNote({notebookId:this.currentBook.id})
-        .then(res=>{
-          this.notes.unshift(res.data)
-        })
+      this.addNote({notebookId:this.currentBook.id})
     }
   }
 }

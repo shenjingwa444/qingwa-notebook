@@ -2,15 +2,24 @@ import Notebooks from "../../apis/notebooks"
 import {Message} from "element-ui"
 
 const state = {
-  notebooks: [],
-  currentBook: ""
+  notebooks: null,
+  currentBookId: null,
 }
 
 const getters = {
   notebooks: state => state.notebooks || [],
+  currentBook: state => {
+    if(!Array.isArray(state.notebooks)) return {}
+    if(!state.currentBookId) return state.notebooks[0]
+    return state.notebooks.find(notebook => notebook.id == state.currentBookId)
+  }
 }
 
 const mutations = {
+  setCurrenBook(state,payload){
+    state.currentBookId = payload.currentBookId
+  },
+
   setNotebooks(state, payload) {
     state.notebooks = payload.notebooks
   },
@@ -31,7 +40,7 @@ const mutations = {
 
 const actions = {
   getNotebooks({commit}) {
-    Notebooks.getAll()
+    return Notebooks.getAll()
       .then(res => {
         commit("setNotebooks", {notebooks: res.data})
       })
@@ -46,7 +55,7 @@ const actions = {
   },
 
   deleteNotebook({commit}, payload) {
-    Notebooks.deleteNotebook(payload.notebookId)
+    return Notebooks.deleteNotebook(payload.notebookId)
       .then(res => {
         commit("deleteNotebook", {notebookId: payload.notebookId})
         Message.success(res.data)
@@ -54,7 +63,7 @@ const actions = {
   },
 
   updateNotebook({commit}, payload) {
-    Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
+    return Notebooks.updateNotebook(payload.notebookId, {title: payload.title})
       .then(res => {
         commit("updateNotebook", {notebookId: payload.notebookId, title: payload.title})
         Message.success(res.data)
