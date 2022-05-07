@@ -24,8 +24,8 @@ export default {
       })
     })
   },
-  updateNote({noteId}, {title, content}) {
-    return request(URL.UPDATE.replace(":noteId", noteId), "PATCH", {title, content})
+  updateNote({ noteId }, { title, content }) {
+    return request(URL.UPDATE.replace(':noteId', noteId), 'PATCH', { title, content })
   },
   deleteNote({noteId}) {
     return request(URL.DELETE.replace(":noteId", noteId), "DELETE")

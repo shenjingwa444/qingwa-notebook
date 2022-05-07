@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import Auth from "../apis/auth"
 import {mapActions,mapGetters} from 'vuex'
 
 export default {
@@ -36,12 +35,7 @@ export default {
     }
   },
   created() {
-    Auth.getInfo()
-      .then(res => {
-        if (!res.isLogin) {
-          this.$router.push({path: "/login"})
-        }
-      })
+    this.checkLogin({path:'/login'})
     this.getNotebooks()
   },
   computed: {
@@ -53,6 +47,7 @@ export default {
       'addNotebook',
       'updateNotebook',
       'deleteNotebook',
+      'checkLogin'
     ]),
     onCreate() {
       this.$prompt('请输入新笔记本标题', '创建笔记名', {

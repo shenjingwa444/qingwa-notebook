@@ -7,8 +7,8 @@
       </div>
       <div class="note-detail-calc" v-show="currentNote.id">
         <div class="note-bar">
-          <span>创建日期：{{ currentNote.friendlyCreatedAt }}</span>
-          <span>更新日期:{{ currentNote.friendlyUpdatedAt }}</span>
+          <span>创建日期：{{ currentNote.createdAtFriendly }}</span>
+          <span>更新日期:{{ currentNote.updatedAtFriendly }}</span>
           <span>{{ statusText }}</span>
           <span class="iconfont icon-shanchu" @click="onDeleteNote"></span>
           <el-tooltip class="item" effect="dark" content="预览" placement="bottom">
@@ -35,8 +35,6 @@
 <script>
 import Auth from "../apis/auth"
 import NoteSidebar from "./NoteSidebar"
-import Bus from "../helpers/bus"
-import Notes from "../apis/notes"
 import _ from "lodash"
 import MarkdownIt from "markdown-it"
 import {mapGetters,mapActions,mapMutations} from 'vuex'
@@ -77,20 +75,19 @@ export default {
       'deleteNote',
       'updateNote',
     ]),
-    onUpdateNote: _.debounce(function () {
-      this.updateNote({noteId:this.currentNote.id,title:this.currentNote.title,content:this.currentNote.content})
-        .then(res => {
-          this.statusText = "已保存"
-        }).catch(err =>{
-          console.log(err)
-          this.statusText = "保存错误"
-      }
-      )
+
+    onUpdateNote: _.debounce(function() {
+      this.updateNote({ noteId: this.currentNote.id, title: this.currentNote.title, content: this.currentNote.content })
+        .then(() => {
+          this.statusText = '已保存'
+        }).catch(() => {
+        this.statusText = '保存出错'
+      })
     }, 300),
+
     onDeleteNote() {
       this.deleteNote({noteId:this.currentNote.id})
-      Notes.deleteNote({noteId: this.currentNote.id})
-        .then(data => {
+        .then(() => {
           this.$router.replace({path: "/note"})
         })
     }
