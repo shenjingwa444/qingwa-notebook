@@ -7,7 +7,7 @@
       </div>
       <ul class="notes">
         <li v-for="note in trashNotes" :key="note.id">
-          <router-link :to="`/note?noteId=${note.id}`">
+          <router-link :to="`/trash?noteId=${note.id}`">
             <span class="date">{{ note.updatedAtFriendly }}</span>
             <span class="title">{{ note.title }}</span>
           </router-link>
@@ -39,72 +39,47 @@
 import {mapGetters, mapActions, mapMutations} from "vuex"
 import MarkdownIt from "markdown-it"
 let md = MarkdownIt()
-import Trash from '../apis/trash'
-window.trash = Trash
 
 export default {
   data() {
     return {
-      currentTrashNote:{
-        id:1,
-        title:'是我的笔记',
-        content:'##hi',
-        createdAtFriendly:'1天前',
-        updatedAtFriendly:'2小时前'
-      },
       belongTo:'11',
-      trashNotes:[
-        {
-          id:1,
-          title:'笔记',
-          content:'##hi',
-          createdAtFriendly:'1天前',
-          updatedAtFriendly:'2小时前'
-        },
-
-        {
-          id:2,
-          title:'笔记',
-          content:'##hi',
-          createdAtFriendly:'1天前',
-          updatedAtFriendly:'2小时前'
-        }
-      ]
     }
   },
   created() {
-    this.getNotes({notebookId:6116})
+    this.getTrashNotes()
+      .then(() => {
+        this.setCurrentTrashNote({ curTrashNoteId: this.$route.query.noteId })
+      })
   },
   computed: {
     ...mapGetters([
-      "notes",
-      "notebooks",
-      "currentBook",
-      "currentNote"
+      'trashNotes',
+      'currentTrashNote'
     ]),
     compiledMarkdown() {
-      return md.render(this.currentNote.content || "")
+      return md.render(this.currentTrashNote.content || "")
     },
   },
   methods: {
     ...mapActions([
-      "getNotebooks",
-      "getNotes",
-      "addNote",
-      "deleteNote",
-      "updateNote",
-      "checkLogin"
+      'getTrashNotes',
+      'deleteTrashNote',
+      'revertTrashNote'
     ]),
     ...mapMutations([
-      "setCurrenBook",
-      "setCurrentNote"
+      'setCurrentTrashNote'
     ]),
     onRevert(){
-      console.log("revert")
+      this.revertTrashNote({noteId:this.$route.query.noteId})
     },
     onDelete(){
-      console.log("delete")
+      this.deleteTrashNote({noteId:this.$route.query.noteId})
     },
+  },
+  beforeRouteUpdate(to,from,next){
+    this.setCurrentTrashNote({currentTrashNoteId:to.query.noteId})
+    next()
   }
 }
 </script>
