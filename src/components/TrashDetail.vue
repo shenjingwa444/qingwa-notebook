@@ -35,10 +35,13 @@
 </template>
 
 <script>
+
 import {mapGetters, mapActions, mapMutations} from "vuex"
 import MarkdownIt from "markdown-it"
-
 let md = MarkdownIt()
+import Trash from '../apis/trash'
+window.trash = Trash
+
 export default {
   data() {
     return {
