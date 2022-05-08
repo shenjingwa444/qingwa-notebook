@@ -11,7 +11,7 @@
         <el-dropdown-item command="trash">回收站</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <span class="btn add-note" @click="addNote">添加笔记</span>
+    <span class="btn add-note" @click="onAddNote">添加笔记</span>
     <div class="menu">
       <div>更新时间</div>
       <div>标题</div>
@@ -67,7 +67,7 @@ export default {
       this.$store.commit('setCurrenBook',{currentBookId:notebookId})
       this.getNotes({notebookId})
     },
-    addNote() {
+    onAddNote() {
       this.addNote({notebookId:this.currentBook.id})
     }
   }

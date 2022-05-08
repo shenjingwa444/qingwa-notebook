@@ -1,6 +1,6 @@
 <template>
   <div id="note" class="detail">
-    <note-sidebar @update:notes="val => notes = val"></note-sidebar>
+    <note-sidebar></note-sidebar>
     <div class="note-detail">
       <div class="note-empty" v-show="!currentNote.id">
         请选择笔记
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import Auth from "../apis/auth"
 import NoteSidebar from "./NoteSidebar"
 import _ from "lodash"
 import MarkdownIt from "markdown-it"
@@ -51,12 +50,7 @@ export default {
     NoteSidebar
   },
   created() {
-    Auth.getInfo()
-      .then(res => {
-        if (!res.isLogin) {
-          this.$router.push({path: "/login"})
-        }
-      })
+    this.checkLogin({path:'./login'})
   },
   computed: {
     ...mapGetters([
@@ -74,6 +68,7 @@ export default {
     ...mapActions([
       'deleteNote',
       'updateNote',
+      'checkLogin'
     ]),
 
     onUpdateNote: _.debounce(function() {
