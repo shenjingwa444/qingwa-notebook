@@ -10,6 +10,10 @@ const getters = {
   currentTrashNote: (state,getters) => {
     if(!state.currentTrashNoteId) return getters.trashNotes[0] || {}
     return state.trashNotes.find(note => note.id == state.currentTrashNoteId) || {}
+  },
+  belongTo:(state,getters,rootState,rootGetters)=>{
+    let notebook = rootGetters.notebooks.find(notebook => notebook.id == getters.currentTrashNote.notebookId) || {}
+    return notebook.title || {}
   }
 }
 

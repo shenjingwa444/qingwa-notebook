@@ -42,11 +42,11 @@ let md = MarkdownIt()
 
 export default {
   data() {
-    return {
-      belongTo:'11',
-    }
+    return {}
   },
   created() {
+    this.checkLogin()
+    this.getNotebooks()
     this.getTrashNotes()
       .then(() => {
         this.setCurrentTrashNote({ curTrashNoteId: this.$route.query.noteId })
@@ -55,7 +55,8 @@ export default {
   computed: {
     ...mapGetters([
       'trashNotes',
-      'currentTrashNote'
+      'currentTrashNote',
+      'belongTo'
     ]),
     compiledMarkdown() {
       return md.render(this.currentTrashNote.content || "")
@@ -65,7 +66,9 @@ export default {
     ...mapActions([
       'getTrashNotes',
       'deleteTrashNote',
-      'revertTrashNote'
+      'revertTrashNote',
+      'getNotebooks',
+      'checkLogin'
     ]),
     ...mapMutations([
       'setCurrentTrashNote'
