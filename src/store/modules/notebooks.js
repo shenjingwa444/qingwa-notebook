@@ -16,7 +16,7 @@ const getters = {
 }
 
 const mutations = {
-  setCurrenBook(state,payload){
+  setCurrentBook(state,payload){
     state.currentBookId = payload.currentBookId
   },
 

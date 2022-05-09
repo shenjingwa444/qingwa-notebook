@@ -15,7 +15,7 @@ const getters = {
 }
 
 const mutations = {
-  setCurrentNote(state,payload){
+  setCurrentNote(state,payload={}){
     state.currentNoteId = payload.currentNoteId
   },
 

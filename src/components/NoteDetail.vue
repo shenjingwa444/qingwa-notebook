@@ -55,7 +55,8 @@ export default {
   computed: {
     ...mapGetters([
       'notes',
-      'currentNote'
+      'currentNote',
+      'currentBook'
     ]),
     previewContent() {
       return md.render(this.currentNote.content || "")
@@ -81,9 +82,21 @@ export default {
     }, 300),
 
     onDeleteNote() {
-      this.deleteNote({noteId:this.currentNote.id})
-        .then(() => {
-          this.$router.replace({path: "/note"})
+      this.$confirm('确认要删除笔记吗?', '删除笔记', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(res=>{
+        return this.deleteNote({noteId:this.currentNote.id})
+      }).then(() => {
+          this.setCurrentNote()
+          this.$router.replace({
+            path: "/note",
+            query:{
+              noteId:this.currentNote.id,
+              notebookId:this.currentBook.id,
+            }
+          })
         })
     }
   },

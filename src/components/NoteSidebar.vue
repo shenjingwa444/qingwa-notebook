@@ -34,10 +34,17 @@ export default {
   created() {
     this.getNotebooks()
       .then(()=>{
-        this.setCurrenBook({currentBookId:this.$route.query.notebookId})
+        this.setCurrentBook({currentBookId:this.$route.query.notebookId})
         return this.getNotes({notebookId:this.currentBook.id})
       }).then(() => {
         this.setCurrentNote({currentNoteId:this.$route.query.noteId})
+        this.$router.replace({
+          path:'/note',
+          query:{
+            noteId:this.currentNote.id,
+            notebookId:this.currentBook.id
+          }
+        })
     })
   },
   data() {
@@ -48,6 +55,7 @@ export default {
       'notes',
       'notebooks',
       'currentBook',
+      'currentNote'
     ])
   },
   methods: {
@@ -57,18 +65,38 @@ export default {
       'addNote'
     ]),
     ...mapMutations([
-      'setCurrenBook',
+      'setCurrentBook',
       'setCurrentNote'
     ]),
     handleCommand(notebookId) {
       if (notebookId === "trash") {
         return this.$router.push({path: "/trash"})
       }
-      this.$store.commit('setCurrenBook',{currentBookId:notebookId})
+      this.setCurrentBook({currentBookId:notebookId})
       this.getNotes({notebookId})
+        .then(()=>{
+          this.setCurrentNote()
+          this.$router.replace({
+            path: "/note",
+            query: {
+              noteId: this.currentNote.id,
+              notebookId: this.currentBook.id
+            }
+          })
+        })
     },
     onAddNote() {
       this.addNote({notebookId:this.currentBook.id})
+        .then(()=>{
+          this.setCurrentNote()
+          this.$router.replace({
+            path:'/note',
+            query:{
+              noteId:this.currentNote.id,
+              notebookId:this.currentBook.id
+            }
+          })
+        })
     }
   }
 }

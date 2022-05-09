@@ -15,21 +15,21 @@
       </ul>
     </div>
     <div class="note-detail">
-        <div class="note-bar" v-if="true">
-          <span>创建日期：{{ currentTrashNote.createdAtFriendly }}</span>
-          <span> | </span>
-          <span>更新日期:{{ currentTrashNote.updatedAtFriendly }}</span>
-          <span> | </span>
-          <span> 所属笔记本：{{belongTo}}</span>
-          <a class="btn action" @click="onRevert">恢复</a>
-          <a class="btn action" @click="onDelete">彻底删除</a>
-          <div class="note-title">
-            <span>{{currentTrashNote.title}}</span>
-          </div>
-          <div class="editor">
-            <div class="preview markdown-body" v-html="compiledMarkdown"></div>
-          </div>
+      <div class="note-bar" v-if="true">
+        <span>创建日期：{{ currentTrashNote.createdAtFriendly }}</span>
+        <span> | </span>
+        <span>更新日期:{{ currentTrashNote.updatedAtFriendly }}</span>
+        <span> | </span>
+        <span> 所属笔记本：{{ belongTo }}</span>
+        <a class="btn action" @click="onRevert">恢复</a>
+        <a class="btn action" @click="onDelete">彻底删除</a>
+        <div class="note-title">
+          <span>{{ currentTrashNote.title }}</span>
         </div>
+        <div class="editor">
+          <div class="preview markdown-body" v-html="compiledMarkdown"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +38,7 @@
 
 import {mapGetters, mapActions, mapMutations} from "vuex"
 import MarkdownIt from "markdown-it"
+
 let md = MarkdownIt()
 
 export default {
@@ -49,14 +50,20 @@ export default {
     this.getNotebooks()
     this.getTrashNotes()
       .then(() => {
-        this.setCurrentTrashNote({ curTrashNoteId: this.$route.query.noteId })
+        this.setCurrentTrashNote({curTrashNoteId: this.$route.query.noteId})
+        this.$router.replace({
+          path: "/trash",
+          query: {
+            noteId: this.currentTrashNote.id
+          }
+        })
       })
   },
   computed: {
     ...mapGetters([
-      'trashNotes',
-      'currentTrashNote',
-      'belongTo'
+      "trashNotes",
+      "currentTrashNote",
+      "belongTo"
     ]),
     compiledMarkdown() {
       return md.render(this.currentTrashNote.content || "")
@@ -64,24 +71,43 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getTrashNotes',
-      'deleteTrashNote',
-      'revertTrashNote',
-      'getNotebooks',
-      'checkLogin'
+      "getTrashNotes",
+      "deleteTrashNote",
+      "revertTrashNote",
+      "getNotebooks",
+      "checkLogin"
     ]),
     ...mapMutations([
-      'setCurrentTrashNote'
+      "setCurrentTrashNote"
     ]),
-    onRevert(){
-      this.revertTrashNote({noteId:this.$route.query.noteId})
+    onRevert() {
+      this.revertTrashNote({noteId: this.$route.query.noteId})
+        .then(() => {
+          this.setCurrentTrashNote()
+          this.$router.replace({
+            path: "/trash",
+            query: {noteId: this.currentTrashNote.id}
+          })
+        })
     },
-    onDelete(){
-      this.deleteTrashNote({noteId:this.$route.query.noteId})
+    onDelete() {
+      this.$confirm("删除后将不能恢复?", "确认彻底删除？", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(res => {
+        return this.deleteTrashNote({noteId: this.$route.query.noteId})
+      }).then(() => {
+        this.setCurrentTrashNote()
+        this.$router.replace({
+          path: "/trash",
+          query: {noteId: this.currentTrashNote.id}
+        })
+      })
     },
   },
-  beforeRouteUpdate(to,from,next){
-    this.setCurrentTrashNote({currentTrashNoteId:to.query.noteId})
+  beforeRouteUpdate(to, from, next) {
+    this.setCurrentTrashNote({currentTrashNoteId: to.query.noteId})
     next()
   }
 }
