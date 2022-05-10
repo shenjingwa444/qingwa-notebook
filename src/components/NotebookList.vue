@@ -10,7 +10,8 @@
       <div class="layout">
         <h3>笔记本列表({{ notebooks.length }})</h3>
         <div class="book-list">
-          <router-link class="notebook" v-for="notebook in notebooks" :key="notebook.id" :to="`/note?notebookId=${notebook.id}`">
+          <router-link class="notebook" v-for="notebook in notebooks" :key="notebook.id"
+                       :to="`/note?notebookId=${notebook.id}`">
             <div>
               <span class="iconfont icon-notebook"></span>
               {{ notebook.title }}
@@ -27,57 +28,55 @@
 </template>
 
 <script>
-import {mapActions,mapGetters} from 'vuex'
-
+import {mapActions, mapGetters} from "vuex"
 export default {
   data() {
-    return {
-    }
+    return {}
   },
   created() {
-    this.checkLogin({path:'/login'})
+    this.checkLogin({path: "/login"})
     this.getNotebooks()
   },
   computed: {
-    ...mapGetters(['notebooks'])
+    ...mapGetters(["notebooks"])
   },
   methods: {
     ...mapActions([
-      'getNotebooks',
-      'addNotebook',
-      'updateNotebook',
-      'deleteNotebook',
-      'checkLogin'
+      "getNotebooks",
+      "addNotebook",
+      "updateNotebook",
+      "deleteNotebook",
+      "checkLogin"
     ]),
     onCreate() {
-      this.$prompt('请输入新笔记本标题', '创建笔记名', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$prompt("请输入新笔记本标题", "创建笔记名", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
         inputPattern: /^.{1,30}$/,
-        inputErrorMessage: '标题不能为空，且不超过30个字符'
+        inputErrorMessage: "标题不能为空，且不超过30个字符"
       }).then(({value}) => {
-        this.addNotebook({title:value})
+        this.addNotebook({title: value})
       })
     },
     onEdit(notebook) {
-      let title = ''
-      this.$prompt('请输入新笔记标题', '修改笔记本', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      let title = ""
+      this.$prompt("请输入新笔记标题", "修改笔记本", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
         inputPattern: /^.{1,30}$/,
-        inputValue:notebook.title,
-        inputErrorMessage: '标题不能为空，且不超过30个字符'
-      }).then(({value})=>{
-        this.updateNotebook({notebookId:notebook.id,title:value})
+        inputValue: notebook.title,
+        inputErrorMessage: "标题不能为空，且不超过30个字符"
+      }).then(({value}) => {
+        this.updateNotebook({notebookId: notebook.id, title: value})
       })
     },
     onDelete(notebook) {
-      this.$confirm('确认要删除笔记本吗?', '删除笔记本', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(()=> {
-        this.deleteNotebook({notebookId:notebook.id})
+      this.$confirm("确认要删除笔记本吗?", "删除笔记本", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.deleteNotebook({notebookId: notebook.id})
       })
     },
   }

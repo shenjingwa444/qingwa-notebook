@@ -34,10 +34,12 @@ export default {
     return new Promise((resolve,reject)=>{
       request(URL.ADD, 'POST', { title })
         .then(res=>{
-          console.log("request.res", res)
           res.data.createdAtFriendly = friendlyDate(res.data.createdAt)
           res.data.updatedAtFriendly = friendlyDate(res.data.updatedAt)
-        })
+          resolve(res)
+        }).catch(err=>{
+          reject(err)
+      })
     })
   }
 }

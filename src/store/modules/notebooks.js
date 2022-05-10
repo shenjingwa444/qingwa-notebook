@@ -51,7 +51,7 @@ const actions = {
     return Notebooks.addNotebook({title: payload.title})
       .then(res => {
         commit("addNotebook", {notebook: res.data})
-        Message.success(res.data)
+        Message.success(res.msg)
       })
   },
 
@@ -59,7 +59,7 @@ const actions = {
     return Notebooks.deleteNotebook(payload.notebookId)
       .then(res => {
         commit("deleteNotebook", {notebookId: payload.notebookId})
-        Message.success(res.data)
+        Message.success(res.msg)
       })
   },
 

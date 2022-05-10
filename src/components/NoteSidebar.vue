@@ -1,6 +1,6 @@
 <template>
   <div class="note-sidebar">
-    <el-dropdown class="notebook-title" @command="handleCommand">
+    <el-dropdown v-if="currentBook.id" class="notebook-title" @command="handleCommand">
           <span class="el-dropdown-link">
             {{ currentBook.title }}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -11,7 +11,8 @@
         <el-dropdown-item command="trash">回收站</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <span class="btn add-note" @click="onAddNote">添加笔记</span>
+    <span v-if="currentBook.id" class="btn add-note" @click="onAddNote">添加笔记</span>
+    <span v-if="!currentBook.id" class="notebook-title">无笔记本</span>
     <div class="menu">
       <div>更新时间</div>
       <div>标题</div>
@@ -35,7 +36,7 @@ export default {
     this.getNotebooks()
       .then(()=>{
         this.setCurrentBook({currentBookId:this.$route.query.notebookId})
-        return this.getNotes({notebookId:this.currentBook.id})
+        if(this.currentBook.id) return this.getNotes({notebookId:this.currentBook.id})
       }).then(() => {
         this.setCurrentNote({currentNoteId:this.$route.query.noteId})
         this.$router.replace({
