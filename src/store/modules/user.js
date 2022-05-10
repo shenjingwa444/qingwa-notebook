@@ -25,7 +25,7 @@ const actions = {
   },
   logout({commit},payload={path:'/login'}){
     return Auth.logout()
-      .then(res=>{
+      .then(()=>{
         commit('setUser',{user:null})
         router.push(payload)
           .then()
@@ -44,7 +44,7 @@ const actions = {
       .then(res=>{
         if (!res.isLogin) {
            router.push(payload)
-             .then(res=>{})
+             .then(()=>{})
         }else{
           this.username = res.data.username
           commit('setUser',{user:res.data})

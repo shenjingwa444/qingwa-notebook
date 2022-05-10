@@ -88,7 +88,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(res=>{
+      }).then(()=>{
         return this.deleteNote({noteId:this.currentNote.id})
       }).then(() => {
           this.setCurrentNote()

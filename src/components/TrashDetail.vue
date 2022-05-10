@@ -46,7 +46,7 @@ export default {
     return {}
   },
   created() {
-    this.checkLogin()
+    this.checkLogin({path:'/login'})
     this.getNotebooks()
     this.getTrashNotes()
       .then(() => {
@@ -95,7 +95,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(res => {
+      }).then(() => {
         return this.deleteTrashNote({noteId: this.$route.query.noteId})
       }).then(() => {
         this.setCurrentTrashNote()
