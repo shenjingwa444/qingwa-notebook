@@ -48,6 +48,10 @@ const actions = {
   },
 
   addNotebook({commit}, payload) {
+    if(state.notebooks.find(notebook=>notebook.title == payload.title)) {
+      Message.error('笔记本标题不能重复')
+      return
+    }
     return Notebooks.addNotebook({title: payload.title})
       .then(res => {
         commit("addNotebook", {notebook: res.data})

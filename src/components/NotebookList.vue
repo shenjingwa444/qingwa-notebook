@@ -59,7 +59,6 @@ export default {
       })
     },
     onEdit(notebook) {
-      let title = ""
       this.$prompt("请输入新笔记标题", "修改笔记本", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
