@@ -12,7 +12,7 @@ export default new Router({
     },
     {
       path: '/login',
-      component: ()=>import('../components/Login')
+      component: ()=>import('../components/Login.vue')
     },
     {
       path: '/note',

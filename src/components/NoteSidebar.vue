@@ -1,6 +1,6 @@
 <template>
   <div class="note-sidebar">
-    <el-dropdown v-if="currentBook.id" class="notebook-title" @command="handleCommand">
+    <el-dropdown v-if="currentBook.id" class="notebook-title" @command="handleCommand" placement="bottom">
           <span class="el-dropdown-link">
             {{ currentBook.title }}
             <i class="el-icon-arrow-down el-icon--right"></i>

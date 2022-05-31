@@ -108,7 +108,7 @@ export default {
       }).then(() => {
         this.login.isError = false
         this.login.notice = ""
-        this.$router.push({path: "notebooks"})
+        this.$router.push({path:"/notebooks"})
       }).catch(data => {
         this.login.isError = true
         this.login.notice = data.msg

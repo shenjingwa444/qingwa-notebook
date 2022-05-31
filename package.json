@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "upload": "cd dist; git init; git remote remove origin; git remote add origin git@github.com:shenjingwa444/qingwa-notebook.git;git add .; git commit -am \"modify\";git push -f origin master && exit 0",
+    "upload": "cd dist && git init && git remote add origin-website git@github.com:shenjingwa444/qingwa-notebook-website.git && git add . && git commit -am \"modify\" && git push -f origin-website master && exit 0",
     "zip": "rm -f *.zip && zip -P jirengu.com -r `git branch | grep '\\* ' | cut -d ' ' -f 2`.zip . -x 'node_modules/*'"
   },
   "dependencies": {
